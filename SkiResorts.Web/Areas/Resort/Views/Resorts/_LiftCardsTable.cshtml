@@ -1,0 +1,39 @@
+﻿@model ICollection<LiftCardListingServiceModel>
+
+@inject ILiftCardService liftCardService
+
+
+<table class="table table-bordered table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price per Day</th>
+            <th>Sales</th>
+            <th>Max days of usage</th>
+            <th>Number of people</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var liftCard in Model)
+        {
+            <tr>
+                <td>@liftCard.Name</td>
+                <td>@liftCard.Price</td>
+                <td>@liftCard.Sales</td>
+                <td>@liftCard.MaxDaysToUse</td>
+                <td>@liftCard.NumberOfPeople</td>
+                <td>
+                    @if (this.User.Identity.IsAuthenticated)
+                    {
+                        @if(await liftCardService.IsLiftCardOfUser(liftCard.Id, this.User.Identity.Name) || this.User.IsInRole(WebConstants.AdministratorRole))
+                        {
+                            <a class="btn btn-warning" asp-area="Resort" asp-controller="LiftCards" asp-action="Edit" asp-route-id="@liftCard.Id">Edit</a>
+                            <a class="btn btn-danger" asp-area="Resort" asp-controller="LiftCards" asp-action="Delete" asp-route-id="@liftCard.Id" onclick="return confirm('Are you sure you want to delete this lift card?')">Delete</a>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

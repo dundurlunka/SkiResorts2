@@ -1,0 +1,31 @@
+﻿@using SkiResorts.Services
+
+@inject UserManager<User> userManager
+@inject IResortService resortService
+@{
+    var userId = userManager.GetUserId(User);
+    var resortId = resortService.GetResortIdOfUser(userId);
+}
+
+@if (await resortService.ResortExistsAsync(resortId))
+{
+    <li>
+        <a asp-area="@WebConstants.ResortArea" asp-controller="Resorts" asp-action="Details" asp-route-id="@resortId">My Resort</a>
+    </li>
+    <li>
+        <a asp-area="Resort" asp-controller="Slopes" asp-action="Create">Create Slope</a>
+    </li>
+    <li>
+        <a asp-area="Resort" asp-controller="Lifts" asp-action="Create">Create Lift</a>
+    </li>
+    <li>
+        <a asp-area="Resort" asp-controller="LiftCards" asp-action="Create">Create Lift Cards</a>
+    </li>
+}
+else
+{
+    <li>
+        <a asp-area="@WebConstants.ResortArea" asp-controller="Resorts" asp-action="Create" >Create Resort</a>
+    </li>
+}
+

@@ -1,0 +1,35 @@
+﻿@model ICollection<SlopeListingServiceModel>
+@inject ISlopeService slopeService
+
+<table class="table table-bordered table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Length</th>
+            <th>Status</th>
+            <th>Difficulty</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var slope in Model)
+        {
+            <tr>
+                <td>@slope.Name</td>
+                <td>@slope.Length</td>
+                <td>@slope.Status.ToFriendlyEnum()</td>
+                <td>@slope.Difficulty.ToFriendlyEnum()</td>
+                <td>
+                    @if (this.User.Identity.IsAuthenticated)
+                    {
+                        @if (await slopeService.IsSlopeOfUserAsync(slope.Id, this.User.Identity.Name) || this.User.IsInRole(WebConstants.AdministratorRole))
+                        {
+                            <a class="btn btn-warning" asp-area="Resort" asp-controller="Slopes" asp-action="Edit" asp-route-id="@slope.Id">Edit</a>
+                            <a class="btn btn-danger" asp-area="Resort" asp-controller="Slopes" asp-action="Delete" asp-route-id="@slope.Id" onclick="return confirm('Are you sure you want to delete this slope?')">Delete</a>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

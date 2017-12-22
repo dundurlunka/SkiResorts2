@@ -1,0 +1,29 @@
+﻿@model SlopeFormServiceModel
+
+
+<form method="post">
+    <hr />
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" required class="form-control" . />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Length"></label>
+        <input asp-for="Length" type="number" min="@DataConstants.SlopeMinLength" max="@DataConstants.SlopeMaxLength" required class="form-control" />
+        <span asp-validation-for="Length" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Difficulty"></label>
+        <select asp-for="Difficulty" asp-items="Html.GetEnumSelectList<SlopeDifficulty>()" required class="form-control"></select>
+        <span asp-validation-for="Difficulty" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Status"></label>
+        <select asp-for="Status" asp-items="Html.GetEnumSelectList<Status>()" required class="form-control"></select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-default">Save Slope</button>
+</form>

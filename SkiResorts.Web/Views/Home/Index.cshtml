@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ResortListingServiceModel>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h2>Resorts</h2>
+
+<table class="table table-responsive table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Slopes</th>
+            <th>Lifts</th>
+            <th>Latest Event</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var resort in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-area="Resort" asp-controller="Resorts" asp-action="Details" asp-route-id="@resort.Id">@resort.Name</a>
+                    <a class="btn btn-info btn-sm" asp-area="Resort" asp-controller="Resorts" asp-action="Details" asp-route-id="@resort.Id">Get more info</a>
+                </td>
+                <td>@resort.SlopesCount</td>
+                <td>@resort.LiftsCount</td>
+                <td>
+                    @if (resort.LatestEvent == null)
+                    {
+                        @:No Events
+                    }
+                    else
+                    {
+                        @resort.LatestEvent.Date.ToShortDateString()
+                        <a asp-area="Resort" asp-controller="Resorts" asp-action="Details" asp-route-id="@resort.Id">
+                            @resort.LatestEvent.Name
+                        </a>
+                    }
+                </td>
+                <td>
+                    @if (this.User.Identity.IsAuthenticated)
+                    {
+                        <a class="btn btn-info" asp-area="" asp-controller="LiftCards" asp-action="Buy" asp-route-id="@resort.Id">Buy lift cards</a>
+
+                        @if (this.User.Identity.Name == resort.OwnerName || this.User.IsInRole(WebConstants.AdministratorRole))
+                        {
+                            <a class="btn btn-warning" asp-area="Resort" asp-controller="Resorts" asp-action="Edit" asp-route-id="@resort.Id">Edit</a>
+                            <a class="btn btn-danger" asp-area="Resort" asp-controller="Resorts" asp-action="Delete" asp-route-id="@resort.Id" onclick="return confirm('Are you sure you want to delete this resort?')">Delete</a>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

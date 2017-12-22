@@ -1,0 +1,38 @@
+﻿@model LiftFormServiceModel
+
+<form method="post">
+    <hr />
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" required class="form-control" . />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Length"></label>
+        <input asp-for="Length" type="number" required class="form-control" />
+        <span asp-validation-for="Length" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Capacity"></label>
+        <input asp-for="Capacity" type="number" required class="form-control" />
+        <span asp-validation-for="Capacity" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Seats"></label>
+        <input asp-for="Seats" type="number" required class="form-control" />
+        <span asp-validation-for="Seats" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="VerticalDrop"></label>
+        <input asp-for="VerticalDrop" type="number" required class="form-control" />
+        <span asp-validation-for="VerticalDrop" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Status"></label>
+        <select asp-for="Status" asp-items="Html.GetEnumSelectList<Status>()" required class="form-control"></select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-default">Save Lift</button>
+</form>

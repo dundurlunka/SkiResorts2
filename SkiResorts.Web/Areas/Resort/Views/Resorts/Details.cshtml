@@ -1,0 +1,35 @@
+﻿@model ResortWithFacilitiesServiceModel
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<a class="btn btn-info" asp-area="" asp-controller="LiftCards" asp-action="Buy" asp-route-Id="@Model.Id">Buy lift cards</a>
+
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#slopes">Slopes</a></li>
+    <li><a data-toggle="tab" href="#lifts">Lifts</a></li>
+    <li><a data-toggle="tab" href="#events">Events</a></li>
+    <li><a data-toggle="tab" href="#liftCards">Lift Cards</a></li>
+</ul>
+
+<div class="tab-content">
+    <div id="slopes" class="tab-pane fade in active">
+        <h3>Slopes</h3>
+        @await Html.PartialAsync("_SlopesTable", Model.Slopes)
+    </div>
+    <div id="lifts" class="tab-pane fade">
+        <h3>Lifts</h3>
+        @await Html.PartialAsync("_LiftsTable", Model.Lifts)
+    </div>
+    <div id="events" class="tab-pane fade">
+        <h3>Events</h3>
+        @await Html.PartialAsync("_EventsTable", Model.Events.OrderByDescending(e => e.Date).ToList())
+    </div>
+    <div id="liftCards" class="tab-pane fade">
+        <h3>Events</h3>
+        @await Html.PartialAsync("_LiftCardsTable", Model.LiftCards)
+    </div>
+</div>
+

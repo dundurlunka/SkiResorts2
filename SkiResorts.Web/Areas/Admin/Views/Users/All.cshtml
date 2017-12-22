@@ -1,0 +1,51 @@
+﻿@model UserListingViewModel
+@{
+    ViewData["Title"] = "All";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-responsive table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Resort</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.Username</td>
+                <td>@user.Email</td>
+                <td>
+                    @if (user.HasResort)
+                    {
+                        <a asp-area="Resort" asp-controller="Resorts" asp-action="Details" asp-route-id="@user.ResortId">@user.ResortName</a>
+                    }
+                    else
+                    {
+                        <span>No resort</span>
+                    }
+                </td>
+                <td>
+                    <form asp-action="AddToRole" asp-controller="Users" asp-area="Admin">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <input type="hidden" name="UserId" value="@user.Id" />
+                                <select required name="Role" asp-items="Model.Roles" class="form-control"></select>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="submit" class="btn btn-primary btn-sm" value="Add to Role" />
+                            </div>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

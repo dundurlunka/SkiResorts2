@@ -1,0 +1,19 @@
+﻿@model ResortFormServiceModel
+
+
+@{
+    ViewData["Title"] = "Edit resort";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        @await Html.PartialAsync("_ResortForm", Model)
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
+

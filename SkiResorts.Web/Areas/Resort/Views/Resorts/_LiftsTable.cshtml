@@ -1,0 +1,39 @@
+﻿@model ICollection<LiftListingServiceModel>
+@inject ILiftService liftService
+
+<table class="table table-bordered table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Capacity</th>
+            <th>Seats</th>
+            <th>Vertical Drop</th>
+            <th>Length</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var lift in Model)
+        {
+            <tr>
+                <td>@lift.Name</td>
+                <td>@lift.Capacity</td>
+                <td>@lift.Seats</td>
+                <td>@lift.VerticalDrop</td>
+                <td>@lift.Length</td>
+                <td>@lift.Status.ToFriendlyEnum()</td>
+                <td>
+                    @if (this.User.Identity.IsAuthenticated)
+                    {
+                        @if (await liftService.IsLiftOfUserAsync(lift.Id, this.User.Identity.Name) || this.User.IsInRole(WebConstants.AdministratorRole))
+                        {
+                            <a class="btn btn-warning" asp-area="Resort" asp-controller="Lifts" asp-action="Edit" asp-route-id="@lift.Id">Edit</a>
+                            <a class="btn btn-danger" asp-area="Resort" asp-controller="Lifts" asp-action="Delete" asp-route-id="@lift.Id" onclick="return confirm('Are you sure you want to delete this lift?')">Delete</a>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

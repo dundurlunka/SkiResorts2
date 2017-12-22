@@ -1,0 +1,81 @@
+﻿@model LiftCardBuyViewModel
+@{
+    ViewData["Title"] = "Buy lift card";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="LiftCardId"></label>
+                <select id="liftCards" asp-for="LiftCardId" asp-items="Model.LiftCards" required class="form-control"></select>
+                <span asp-validation-for="LiftCardId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price"></label>
+                <input disabled id="price" type="number" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Days To Use</label>
+                <input id="daysSelectedToUse" asp-for="DaysSelected" min="1" max="7" required class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Number Of People</label>
+                <input disabled id="numberOfPeople" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="LiftCardDate"></label>
+                <input asp-for="LiftCardDate" type="date" required class="form-control" />
+                <span asp-validation-for="LiftCardDate" class="text-danger"></span>
+            </div>
+
+            <input type="hidden"asp-for="Price" class="form-control" id="priceConstant" /> 
+
+            <button type="submit" class="btn btn-default">Buy Lift Card</button>
+        </form>
+    </div>
+</div>
+
+<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        getCardData();
+        $("#liftCards").change(function () {
+            getCardData();
+        })
+
+        $("#daysSelectedToUse").on("input", function () {
+            let priceConstant = $("#priceConstant").val();
+            let selectedDays = $("#daysSelectedToUse").val();
+            $("#price").val(priceConstant * selectedDays);            
+        })
+
+        function getCardData() {
+            let currentLiftCardId = $("#liftCards").val();
+
+            $.ajax({
+                url: "/LiftCards/GetLiftCardData?id=" + currentLiftCardId,
+                type: "GET",
+                success: function (data) {
+                    let price = data["price"];
+                    let numberOfPeople = data["numberOfPeople"];
+                    let maxDaysToUse = data["maxDaysToUse"];
+                    $("#price").val(price);
+                    $("#priceConstant").val(price);
+                    $("#daysSelectedToUse").attr("max", maxDaysToUse);
+                    $("#numberOfPeople").val(numberOfPeople)
+                },
+                error: function () {
+                }
+            });
+        }
+    })
+</script>
+
+

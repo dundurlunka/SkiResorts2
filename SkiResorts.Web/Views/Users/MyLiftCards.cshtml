@@ -1,0 +1,29 @@
+﻿@model LiftCardUserListingServiceModel
+@{
+    ViewData["Title"] = "My Lift Cards";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-responsive table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Purchase Date</th>
+            <th>Lift Card Date</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var liftCard in Model.LiftCards)
+        {
+            <tr>
+                <td>@liftCard.Name</td>
+                <td>@liftCard.PurchaseDate.ToShortDateString()</td>
+                <td>@liftCard.LiftCardDate.ToShortDateString()</td>
+                <td>@liftCard.Price</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
