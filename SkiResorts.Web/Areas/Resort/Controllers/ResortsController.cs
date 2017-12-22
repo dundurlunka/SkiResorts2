@@ -46,7 +46,7 @@
         {
             if (!ModelState.IsValid)
             {
-                return View();
+                return View(model);
             }
 
             this.resortService.Create(model.Name, model.OwnerId);
