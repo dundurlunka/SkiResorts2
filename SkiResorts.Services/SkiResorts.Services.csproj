@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="itextsharp.pdfa" Version="5.5.12" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SkiResorts.Common\SkiResorts.Common.csproj" />
     <ProjectReference Include="..\SkiResorts.Data\SkiResorts.Data.csproj" />
   </ItemGroup>

@@ -31,5 +31,7 @@
         Task<LiftCardUserListingServiceModel> GetBoughtLiftCards(string userId);
 
         Task DeleteAllAsync(int resortId);
+
+        Task<byte[]> GetPdfLiftCard(int id, string userId, DateTime liftCardDate);
     }
 }

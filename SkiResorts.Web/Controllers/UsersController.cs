@@ -9,6 +9,7 @@
     using Microsoft.AspNetCore.Mvc;
     using SkiResorts.Data.Models;
     using SkiResorts.Services;
+    using SkiResorts.Web.Infrastructure.Extensions;
 
     [Authorize]
     public class UsersController : Controller
@@ -29,6 +30,21 @@
             var liftCards = await this.liftCardService.GetBoughtLiftCards(userId);
 
             return View(liftCards);
+        }
+
+        public async Task<IActionResult> DownloadLiftCard(int id, DateTime liftCardDate)
+        {
+            var userId = this.userManager.GetUserId(User);
+
+            var liftCardContent = await this.liftCardService.GetPdfLiftCard(id, userId, liftCardDate);
+
+            if (liftCardContent == null)
+            {
+                TempData.AddWarningMessage("A problem downloading lift card occured");
+                return RedirectToAction(nameof(MyLiftCards));
+            }
+
+            return File(liftCardContent, "application/pdf", "Lift-card.pdf");
         }
     }
 }

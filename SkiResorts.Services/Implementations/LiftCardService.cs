@@ -13,10 +13,12 @@
     public class LiftCardService : ILiftCardService
     {
         private readonly SkiResortsDbContext db;
+        private readonly IPdfGenerator pdfGenerator;
 
-        public LiftCardService(SkiResortsDbContext db)
+        public LiftCardService(SkiResortsDbContext db, IPdfGenerator pdfGenerator)
         {
             this.db = db;
+            this.pdfGenerator = pdfGenerator;
         }
 
         public async Task BuyLiftCard(string userId, DateTime liftCardDate, decimal price, int liftCardId)
@@ -159,5 +161,24 @@
                 .db
                 .LiftCards
                 .AnyAsync(l => l.Id == liftCardId);
+
+        public async Task<byte[]> GetPdfLiftCard(int liftCardId, string userId, DateTime liftCardDate)
+        {
+            var userLiftCard = await this.db
+                .FindAsync<UserLiftCard>(userId, liftCardId, liftCardDate);
+
+            if (userLiftCard == null)
+            {
+                return null;
+            }
+
+            return this.pdfGenerator.GeneratePdfFromHtml(string.Format(
+                ServiceConstants.PdfLiftCardFormat,
+                userLiftCard.PurchaseDate,
+                userLiftCard.LiftCardDate,
+                userLiftCard.LiftCardId,
+                userLiftCard.UserId,
+                userLiftCard.Price));
+        }
     }
 }

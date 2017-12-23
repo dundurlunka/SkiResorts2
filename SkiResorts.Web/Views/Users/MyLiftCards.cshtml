@@ -12,6 +12,7 @@
             <th>Purchase Date</th>
             <th>Lift Card Date</th>
             <th>Price</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -22,6 +23,7 @@
                 <td>@liftCard.PurchaseDate.ToShortDateString()</td>
                 <td>@liftCard.LiftCardDate.ToShortDateString()</td>
                 <td>@liftCard.Price</td>
+                <td><a class="btn btn-info" asp-area="" asp-controller="Users" asp-action="DownloadLiftCard" asp-route-id="@liftCard.LiftCardId" asp-route-liftCardDate="@liftCard.LiftCardDate">Download lift card</a></td>
             </tr>
         }
     </tbody>
