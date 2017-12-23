@@ -288,7 +288,8 @@
                 ViewData["ReturnUrl"] = returnUrl;
                 ViewData["LoginProvider"] = info.LoginProvider;
                 var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                return View("ExternalLogin", new ExternalLoginViewModel { Email = email });
+                var username = info.Principal.FindFirstValue(ClaimTypes.Name);
+                return View("ExternalLogin", new ExternalLoginViewModel { Email = email, Username = username });
             }
         }
 
@@ -305,7 +306,7 @@
                 {
                     throw new ApplicationException("Error loading external login information during confirmation.");
                 }
-                var user = new User { UserName = model.Email, Email = model.Email };
+                var user = new User { UserName = string.Join("", model.Username.Split(' ')), Email = model.Email };
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
